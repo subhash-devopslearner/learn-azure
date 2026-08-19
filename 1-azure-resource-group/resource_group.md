@@ -14,6 +14,26 @@ Azure CLI:
 `az group create --name rg-demo --location eastus`  
 `az group create -n rg-demo -l eastus`
 
+```
+az group --help
+
+Group
+    az group : Manage resource groups and template deployments.
+
+Subgroups:
+    lock   : Manage Azure resource group locks.
+
+Commands:
+    create : Create a new resource group.
+    delete : Delete a resource group.
+    exists : Check if a resource group exists.
+    export : Captures a resource group as a template.
+    list   : List resource groups.
+    show   : Gets a resource group.
+    update : Update a resource group.
+    wait   : Place the CLI in a waiting state until a condition of the resource group is met.
+```
+
 Terraform:
 
 ```
