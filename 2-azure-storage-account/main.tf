@@ -24,3 +24,28 @@ resource "azurerm_storage_account" "storage" {
   account_tier             = "Standard"
   account_replication_type = "LRS"  
 }
+
+resource "azurerm_storage_container" "container" {
+  name                     = "my2026files"
+  storage_account_id       = azurerm_storage_account.storage.id
+  container_access_type    = "private"
+}
+
+data "azurerm_subscription" "primary" {
+}
+
+data "azurerm_client_config" "config" {
+}
+
+resource "azurerm_role_assignment" "blobuploadrole" {
+  scope                = data.azurerm_subscription.primary.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = data.azurerm_client_config.config.object_id
+}
+
+resource "azurerm_storage_blob" "blobupload" {
+  name                 = "firstFileUpload.txt"
+  storage_container_id = azurerm_storage_container.container.id
+  type                 = "Block"
+  source               = "firstFileUpload.txt"
+}
