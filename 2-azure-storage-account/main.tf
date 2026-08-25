@@ -49,3 +49,27 @@ resource "azurerm_storage_blob" "blobupload" {
   type                 = "Block"
   source               = "firstFileUpload.txt"
 }
+
+data "azurerm_storage_account_blob_container_sas" "sas-share" {
+  connection_string = azurerm_storage_account.storage.primary_connection_string
+  container_name    = azurerm_storage_container.container.name
+  https_only        = true
+
+  start  = "2026-08-25T00:00:00Z"
+  expiry = "2026-08-26T00:00:00Z"
+
+  permissions {
+    read   = true
+    write  = false
+    delete = false
+    list   = true
+    add    = false
+    create = false
+  }
+}
+
+# Use terraform output secure_blob_url to see shared url
+output "secure_blob_url" {
+  value     = "${azurerm_storage_blob.blobupload.url}${data.azurerm_storage_account_blob_container_sas.sas-share.sas}"
+  sensitive = true
+}
